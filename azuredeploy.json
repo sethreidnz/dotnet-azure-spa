@@ -1,0 +1,86 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appServicePlanName": {
+            "defaultValue": "dotnet-azure-spa",
+            "type": "string"
+        },
+        "webAppName": {
+            "defaultValue": "dotnet-azure-spa",
+            "type": "string"
+        },
+        "appServicePlanSKU": {
+            "type": "string",
+            "allowedValues": [
+                "Free",
+                "Basic",
+                "Shared",
+                "Standard"
+            ],
+            "defaultValue": "Free"
+        },
+        "releasePackageFileName":{
+            "type": "string"
+        },
+        "releasePackageLocationUri":{
+            "type":"string"
+        },
+        "releasePackageLocationUriSasToken":{
+            "type":"string"
+        }
+    },
+    "resources": [
+        {
+            "comments": "The Azure Web App Service",
+            "name": "[parameters('appServicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-06-01",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "appServicePlan"
+            },
+            "properties": {
+                    "name": "[parameters('appServicePlanName')]",
+                    "sku": "[parameters('appServicePlanSKU')]"
+                }
+        },
+        {
+            "comments": "The Azure Web App Instance to host the code",
+            "name": "[parameters('webAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-08-01",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+            ],
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]": "Resource",
+                "displayName": "webApp"
+            },
+            "properties": {
+                "name": "[parameters('webAppName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+            },
+            "resources": [
+                {
+                    "comments": "Deploy the deploy package to the Web App",
+                    "name": "MSDeploy",
+                    "type": "extensions",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webAppName'))]"
+                    ],
+                    "tags": {
+                        "displayName": "webDeploy"
+                    },
+                    "properties": {
+                        "packageUri": "[concat(parameters('releasePackageLocationUri'), '/',parameters('releasePackageFileName'),parameters('releasePackageLocationUriSasToken'))]"
+                    }
+                }
+            ]
+        }
+    ]
+}
