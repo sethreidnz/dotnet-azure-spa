@@ -41,7 +41,7 @@ npm start
 
 This will launch the client at [http://localhost:3000](http://localhost:3000).
 
-### Production Build - React
+### Production Build
 
 To do this you need to build the client and then copy it to the wwwroot. There are npm scripts for doing this already setup. Run the following to test the production version.
 
