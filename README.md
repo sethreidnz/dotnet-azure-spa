@@ -34,6 +34,7 @@ The server will now be running at [http://localhost:5000](http://localhost:5000)
 From the root of the project:
 
 ```bash
+cd client/react
 npm install #you only need to do this the first time
 npm start
 ```
@@ -45,7 +46,7 @@ This will launch the client at [http://localhost:3000](http://localhost:3000).
 To do this you need to build the client and then copy it to the wwwroot. There are npm scripts for doing this already setup. Run the following to test the production version.
 
 ```bash
-cd client
+cd client/react
 npm run build
 npm run copy-to-wwwroot
 ```
