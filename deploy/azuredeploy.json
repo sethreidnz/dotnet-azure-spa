@@ -27,10 +27,19 @@
         "reactReleasePackageFileName":{
             "type": "string"
         },
-        "releasePackageLocationUri":{
+        "reactPackageLocationUri":{
             "type":"string"
         },
-        "releasePackageLocationUriSasToken":{
+        "reactPackageLocationUriSasToken":{
+            "type":"string"
+        },
+        "angular2ReleasePackageFileName":{
+            "type": "string"
+        },
+        "angular2PackageLocationUri":{
+            "type":"string"
+        },
+        "angular2PackageLocationUriSasToken":{
             "type":"string"
         }
     },
@@ -51,7 +60,7 @@
                 }
         },
         {
-            "comments": "The Azure Web App Instance to host the code",
+            "comments": "The Azure Web App Instance to host the React application",
             "name": "[parameters('reactWebAppName')]",
             "type": "Microsoft.Web/sites",
             "location": "[resourceGroup().location]",
@@ -81,7 +90,43 @@
                         "displayName": "webDeploy"
                     },
                     "properties": {
-                        "packageUri": "[concat(parameters('releasePackageLocationUri'), '/',parameters('reactReleasePackageFileName'),parameters('releasePackageLocationUriSasToken'))]"
+                        "packageUri": "[concat(parameters('reactPackageLocationUri'), '/',parameters('reactReleasePackageFileName'),parameters('reactPackageLocationUriSasToken'))]"
+                    }
+                }
+            ]
+        },
+        {
+            "comments": "The Azure Web App Instance to host the React application",
+            "name": "[parameters('angular2WebAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-08-01",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+            ],
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]": "Resource",
+                "displayName": "webApp"
+            },
+            "properties": {
+                "name": "[parameters('angular2WebAppName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', parameters('appServicePlanName'))]"
+            },
+            "resources": [
+                {
+                    "comments": "Deploy the deploy package to the Web App",
+                    "name": "MSDeploy",
+                    "type": "extensions",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('angular2WebAppName'))]"
+                    ],
+                    "tags": {
+                        "displayName": "webDeploy"
+                    },
+                    "properties": {
+                        "packageUri": "[concat(parameters('angular2PackageLocationUri'), '/',parameters('angular2ReleasePackageFileName'),parameters('angular2PackageLocationUriSasToken'))]"
                     }
                 }
             ]
