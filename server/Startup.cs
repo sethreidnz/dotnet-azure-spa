@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -67,10 +63,15 @@ namespace DotnetAzureSpa
             {
                 await next();
 
+                if (context.Request.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    await context.Authentication.ChallengeAsync();
+                    return;
+                }
+
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
                 {
                     context.Request.Path = "/index.html";
-                    await next();
                 }
             });
 
