@@ -63,12 +63,6 @@ namespace DotnetAzureSpa
             {
                 await next();
 
-                if (context.Request.HttpContext.User.Identity.IsAuthenticated)
-                {
-                    await context.Authentication.ChallengeAsync();
-                    return;
-                }
-
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
                 {
                     context.Request.Path = "/index.html";

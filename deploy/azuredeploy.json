@@ -3,15 +3,15 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appServicePlanName": {
-            "defaultValue": "dotnet-azure-spa",
+            "defaultValue": "[concat(resourceGroup().name, '-app-service')]",
             "type": "string"
         },
         "reactWebAppName": {
-            "defaultValue": "dotnet-azure-spa-react",
+            "defaultValue": "[concat(resourceGroup().name, '-react')]",
             "type": "string"
         },
         "angular2WebAppName": {
-            "defaultValue": "dotnet-azure-spa-angular2",
+            "defaultValue": "[concat(resourceGroup().name, '-angular2')]",
             "type": "string"
         },
         "appServicePlanSKU": {
@@ -96,7 +96,7 @@
             ]
         },
         {
-            "comments": "The Azure Web App Instance to host the React application",
+            "comments": "The Azure Web App Instance to host the Angular2 application",
             "name": "[parameters('angular2WebAppName')]",
             "type": "Microsoft.Web/sites",
             "location": "[resourceGroup().location]",
