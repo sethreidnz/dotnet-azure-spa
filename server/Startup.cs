@@ -46,11 +46,7 @@ namespace DotnetAzureSpa
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             
-            ConfigureRouting(app, env);
-        }
-
-        private void ConfigureRouting(IApplicationBuilder app, IHostingEnvironment env)
-        {
+            
             if (HostingEnvironment.IsDevelopment())
             {
                 app.UseCors("AllowAll");
