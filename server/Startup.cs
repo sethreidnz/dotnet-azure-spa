@@ -29,6 +29,7 @@ namespace DotnetAzureSpa
             {
                 services.AddCors(options => options.AddPolicy("AllowAll", 
                     p => p.WithOrigins("http://localhost:3000","http://localhost:4200")
+                    .AllowCredentials()
                     .AllowAnyMethod()
                     .AllowAnyHeader()));
             }
