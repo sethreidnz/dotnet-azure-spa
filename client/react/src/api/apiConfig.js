@@ -1,7 +1,4 @@
-console.log(process.env)
-let ApiConfig = {
-    host: process.env.API_HOST ? process.env.API_HOST : window.location.origin
+export const ApiConfig = {
+    host: process.env.REACT_APP_API_HOST ? process.env.REACT_APP_API_HOST : window.location.origin
 }
-console.log(ApiConfig)
-
 export default ApiConfig
