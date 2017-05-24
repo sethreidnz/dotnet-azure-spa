@@ -1,5 +1,5 @@
-import ApiConfig from './apiConfig'
-const valuesEndpoint = `${ApiConfig.apiHost}/api/values`
+import { environment } from '../../environments/environment';
+const valuesEndpoint = `${environment.apiHost}/api/values`
 
 export const getValues = async () => {
     var response = await fetch(valuesEndpoint)

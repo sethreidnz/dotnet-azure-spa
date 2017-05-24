@@ -27,9 +27,10 @@ namespace DotnetAzureSpa
         {
             if (HostingEnvironment.IsDevelopment())
             {
-                services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                                                                   .AllowAnyMethod()
-                                                                    .AllowAnyHeader()));
+                services.AddCors(options => options.AddPolicy("AllowAll", 
+                    p => p.WithOrigins("http://localhost:3000","http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()));
             }
             services.AddOptions();
             services.AddMvc();
